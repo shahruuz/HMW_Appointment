@@ -1,0 +1,413 @@
+<link rel="preconnect" href="https://script.google.com">
+<link rel="preconnect" href="https://script.googleusercontent.com">
+<link rel="dns-prefetch" href="//script.google.com">
+<link rel="dns-prefetch" href="//script.googleusercontent.com">
+
+<style>
+  #selfPayThankYouAnchor {
+    display: block;
+    width: 1px;
+    height: 1px;
+    margin: 0;
+    padding: 0;
+    scroll-margin-top: 80px;
+  }
+
+  #selfPayFormWrapper,
+  #selfPayForm {
+    overflow-anchor: none;
+  }
+</style>
+
+
+<!--
+  This anchor is OUTSIDE the iframe.
+  Safari can reliably scroll the Squarespace page to this.
+-->
+<div
+  id="selfPayThankYouAnchor"
+  aria-hidden="true"
+></div>
+
+
+<div
+  id="selfPayFormWrapper"
+  style="
+    width:100%;
+    max-width:760px;
+    margin:0 auto;
+    padding:0;
+  "
+>
+
+  <iframe
+    id="selfPayForm"
+    src="https://script.google.com/macros/s/AKfycbw2Xbml92WOca2PSjiotP5dDWj7p_ect1eMyvnoVrcBTXSe29sLhshDU75tjGTZiVxR0Q/exec"
+    width="100%"
+    height="1200"
+    frameborder="0"
+    scrolling="no"
+    loading="eager"
+    title="Request an Appointment"
+    style="
+      display:block;
+      width:100%;
+      height:1200px;
+      border:0;
+      margin:0;
+      padding:0;
+      overflow:hidden;
+    "
+  ></iframe>
+
+</div>
+
+
+<script>
+(function () {
+
+  const frame =
+    document.getElementById(
+      'selfPayForm'
+    );
+
+  const wrapper =
+    document.getElementById(
+      'selfPayFormWrapper'
+    );
+
+  const anchor =
+    document.getElementById(
+      'selfPayThankYouAnchor'
+    );
+
+
+  if (
+    !frame ||
+    !wrapper ||
+    !anchor
+  ) {
+    return;
+  }
+
+
+  let conversionFired = false;
+
+  let submissionComplete = false;
+
+
+  /*
+   * =====================================
+   * SCROLL THE ACTUAL SQUARESPACE PAGE
+   * =====================================
+   */
+
+  function jumpToForm() {
+
+    /*
+     * Method 1:
+     * browser-native anchor scrolling.
+     */
+    try {
+
+      anchor.scrollIntoView({
+        behavior: 'auto',
+        block: 'start'
+      });
+
+    } catch (error) {
+
+      /*
+       * Older browser fallback.
+       */
+      anchor.scrollIntoView(true);
+
+    }
+
+
+    /*
+     * Method 2:
+     * explicit page coordinates.
+     *
+     * This is intentionally redundant.
+     * It gives iOS Safari a fallback.
+     */
+    const y =
+      anchor.getBoundingClientRect().top +
+      window.pageYOffset -
+      70;
+
+
+    window.scrollTo(
+      0,
+      Math.max(0, y)
+    );
+
+
+    /*
+     * Additional Safari fallback.
+     */
+    document.documentElement.scrollTop =
+      Math.max(0, y);
+
+    document.body.scrollTop =
+      Math.max(0, y);
+
+  }
+
+
+
+  /*
+   * =====================================
+   * MESSAGE LISTENER
+   * =====================================
+   */
+
+  window.addEventListener(
+    'message',
+    function (event) {
+
+
+      /*
+       * Only trust messages from this
+       * specific iframe.
+       */
+      if (
+        event.source !==
+        frame.contentWindow
+      ) {
+        return;
+      }
+
+
+
+      /*
+       * =================================
+       * NORMAL IFRAME RESIZING
+       * =================================
+       */
+
+      if (
+        event.data &&
+        event.data.type ===
+          'selfpay_resize'
+      ) {
+
+        const requestedHeight =
+          Number(
+            event.data.height
+          );
+
+
+        if (
+          Number.isFinite(
+            requestedHeight
+          ) &&
+          requestedHeight >= 150 &&
+          requestedHeight <= 3000
+        ) {
+
+          const height =
+            Math.ceil(
+              requestedHeight
+            );
+
+
+          frame.style.height =
+            height + 'px';
+
+
+          frame.setAttribute(
+            'height',
+            String(height)
+          );
+
+
+          /*
+           * After successful submission,
+           * resizing can shift Safari's
+           * viewport.
+           *
+           * Immediately anchor it again.
+           */
+          if (submissionComplete) {
+
+            requestAnimationFrame(
+              function () {
+
+                jumpToForm();
+
+                requestAnimationFrame(
+                  jumpToForm
+                );
+
+              }
+            );
+
+
+            setTimeout(
+              jumpToForm,
+              100
+            );
+
+
+            setTimeout(
+              jumpToForm,
+              300
+            );
+
+          }
+
+        }
+
+
+        return;
+
+      }
+
+
+
+      /*
+       * =================================
+       * SUCCESSFUL SUBMISSION
+       * =================================
+       */
+
+      if (
+        event.data &&
+        event.data.type ===
+          'selfpay_form_submitted'
+      ) {
+
+        submissionComplete = true;
+
+
+        console.log(
+          'Self-pay form submitted successfully.'
+        );
+
+
+        /*
+         * -------------------------------
+         * GOOGLE ADS
+         * -------------------------------
+         */
+
+        if (!conversionFired) {
+
+          conversionFired = true;
+
+
+          if (
+            typeof gtag ===
+            'function'
+          ) {
+
+            gtag(
+              'event',
+              'conversion',
+              {
+                send_to:
+                  'AW-18347037955/t96bCP3V65QdEIOqxqxE'
+              }
+            );
+
+
+            console.log(
+              'Google Ads conversion fired.'
+            );
+
+          }
+
+          else {
+
+            console.warn(
+              'Google gtag was not found.'
+            );
+
+          }
+
+        }
+
+
+
+        /*
+         * =================================
+         * IMPORTANT SEQUENCE
+         * =================================
+         *
+         * The iframe has NOT shrunk yet.
+         *
+         * First move Squarespace to the
+         * top of the form.
+         */
+
+        jumpToForm();
+
+
+        requestAnimationFrame(
+          function () {
+
+            jumpToForm();
+
+          }
+        );
+
+
+        /*
+         * Let Safari settle.
+         */
+        setTimeout(
+          function () {
+
+            jumpToForm();
+
+
+            /*
+             * NOW tell the iframe:
+             *
+             * Parent page is positioned.
+             * It is safe to shrink.
+             */
+            frame.contentWindow.postMessage(
+              {
+                type:
+                  'selfpay_parent_scrolled'
+              },
+              '*'
+            );
+
+          },
+          150
+        );
+
+
+        /*
+         * Additional parent-side anchoring
+         * after the child is expected to
+         * resize.
+         */
+        setTimeout(
+          jumpToForm,
+          300
+        );
+
+
+        setTimeout(
+          jumpToForm,
+          600
+        );
+
+
+        setTimeout(
+          jumpToForm,
+          1000
+        );
+
+      }
+
+    }
+  );
+
+})();
+</script>
