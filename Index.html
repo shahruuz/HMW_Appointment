@@ -1,0 +1,2624 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+  <base target="_top">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, viewport-fit=cover"
+  >
+
+
+  <style>
+
+    :root {
+      --navy: #213f52;
+      --navy-dark: #183442;
+
+      --text: #203a4b;
+      --muted: #687c87;
+
+      --border: #d7e1e5;
+      --selected: #eff5f7;
+
+      --white: #ffffff;
+
+      --success-bg: #edf5ef;
+      --success: #477158;
+
+      --danger: #a33f3f;
+      --danger-bg: #fff7f7;
+
+      --headway: #607f91;
+    }
+
+
+    * {
+      box-sizing:
+        border-box;
+    }
+
+
+    /*
+     * =======================================
+     * NO INNER SCROLLBAR
+     * =======================================
+     */
+
+    html,
+    body {
+      width: 100%;
+
+      height: auto !important;
+      min-height: 0 !important;
+
+      margin: 0;
+      padding: 0;
+
+      overflow-x:
+        hidden !important;
+
+      overflow-y:
+        hidden !important;
+
+      background:
+        transparent;
+
+      touch-action:
+        pan-y pinch-zoom;
+    }
+
+
+    body {
+      font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Arial,
+        sans-serif;
+
+      color:
+        var(--text);
+
+      -webkit-font-smoothing:
+        antialiased;
+    }
+
+
+    #app {
+      width: 100%;
+      max-width: 720px;
+
+      margin:
+        0 auto;
+
+      padding:
+        3px 6px 28px;
+
+      overflow:
+        hidden;
+    }
+
+
+    .card {
+      width: 100%;
+
+      padding:
+        24px;
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius:
+        14px;
+
+      background:
+        var(--white);
+    }
+
+
+    /* HEADER */
+
+    .header {
+      margin-bottom:
+        20px;
+    }
+
+
+    .header h1 {
+      margin:
+        0 0 6px;
+
+      font-size:
+        27px;
+
+      line-height:
+        1.15;
+    }
+
+
+    .header p {
+      margin:
+        0;
+
+      color:
+        var(--muted);
+
+      font-size:
+        14px;
+
+      line-height:
+        1.45;
+    }
+
+
+    /* FIELDS */
+
+    .field {
+      margin-bottom:
+        14px;
+    }
+
+
+    .name-row {
+      display:
+        grid;
+
+      grid-template-columns:
+        minmax(0,1fr)
+        minmax(0,1fr);
+
+      gap:
+        12px;
+    }
+
+
+    label,
+    .group-label {
+      display:
+        block;
+
+      margin-bottom:
+        6px;
+
+      font-size:
+        13.5px;
+
+      font-weight:
+        700;
+    }
+
+
+    .required {
+      color:
+        var(--danger);
+    }
+
+
+    input[type="text"],
+    input[type="tel"],
+    input[type="email"] {
+      display:
+        block;
+
+      width:
+        100%;
+
+      height:
+        47px;
+
+      margin:
+        0;
+
+      padding:
+        0 12px;
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius:
+        9px;
+
+      outline:
+        0;
+
+      background:
+        var(--white);
+
+      color:
+        var(--text);
+
+      font-family:
+        inherit;
+
+      font-size:
+        16px;
+
+      -webkit-appearance:
+        none;
+
+      appearance:
+        none;
+    }
+
+
+    input:focus {
+      border-color:
+        #8099a5;
+    }
+
+
+    input.invalid {
+      border-color:
+        #c87070;
+
+      background:
+        var(--danger-bg);
+    }
+
+
+    /* ERRORS */
+
+    .field-error {
+      display:
+        none;
+
+      margin-top:
+        5px;
+
+      color:
+        var(--danger);
+
+      font-size:
+        12px;
+
+      line-height:
+        1.3;
+    }
+
+
+    .field-error.visible {
+      display:
+        block;
+    }
+
+
+    /* OPTIONS */
+
+    .options {
+      display:
+        grid;
+
+      gap:
+        7px;
+    }
+
+
+    .option {
+      display:
+        flex;
+
+      align-items:
+        flex-start;
+
+      width:
+        100%;
+
+      min-height:
+        46px;
+
+      margin:
+        0;
+
+      padding:
+        9px 10px;
+
+      gap:
+        10px;
+
+      border:
+        1px solid
+        #e1e7ea;
+
+      border-radius:
+        9px;
+
+      background:
+        #fbfcfc;
+
+      cursor:
+        pointer;
+    }
+
+
+    .option.selected {
+      border-color:
+        #b6cad3;
+
+      background:
+        var(--selected);
+    }
+
+
+    .option input {
+      flex:
+        0 0 auto;
+
+      width:
+        18px;
+
+      height:
+        18px;
+
+      margin:
+        1px 0 0;
+
+      accent-color:
+        var(--navy);
+    }
+
+
+    .option-copy {
+      flex:
+        1 1 auto;
+
+      min-width:
+        0;
+    }
+
+
+    .option-title {
+      display:
+        block;
+
+      font-size:
+        14px;
+
+      font-weight:
+        600;
+
+      line-height:
+        1.3;
+    }
+
+
+    .option-sub {
+      display:
+        block;
+
+      margin-top:
+        2px;
+
+      color:
+        var(--muted);
+
+      font-size:
+        11.5px;
+
+      line-height:
+        1.35;
+    }
+
+
+    /* BUTTON */
+
+    #actionArea {
+      margin-top:
+        5px;
+    }
+
+
+    #submitButton {
+      display:
+        block;
+
+      width:
+        100%;
+
+      min-height:
+        49px;
+
+      padding:
+        11px 17px;
+
+      border:
+        0;
+
+      border-radius:
+        999px;
+
+      background:
+        var(--navy);
+
+      color:
+        #ffffff;
+
+      font-family:
+        inherit;
+
+      font-size:
+        15px;
+
+      font-weight:
+        700;
+
+      cursor:
+        pointer;
+    }
+
+
+    #submitButton:hover {
+      background:
+        var(--navy-dark);
+    }
+
+
+    #submitButton:disabled {
+      opacity:
+        0.66;
+
+      cursor:
+        default;
+    }
+
+
+    #status {
+      margin-top:
+        8px;
+
+      font-size:
+        12px;
+
+      line-height:
+        1.4;
+    }
+
+
+    .error-status {
+      color:
+        var(--danger);
+    }
+
+
+    .slow-status {
+      color:
+        var(--muted);
+    }
+
+
+    /*
+     * =======================================
+     * SUCCESS
+     * =======================================
+     *
+     * It replaces the button/status region.
+     */
+
+    #successCard {
+      display:
+        none;
+
+      width:
+        100%;
+
+      padding:
+        20px 16px;
+
+      border:
+        1px solid
+        #d2dfd6;
+
+      border-radius:
+        14px;
+
+      background:
+        #fbfdfb;
+
+      text-align:
+        center;
+    }
+
+
+    #successCard.visible {
+      display:
+        block;
+    }
+
+
+    .success-check {
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      justify-content:
+        center;
+
+      width:
+        42px;
+
+      height:
+        42px;
+
+      margin:
+        0 auto 9px;
+
+      border-radius:
+        50%;
+
+      background:
+        var(--success-bg);
+
+      color:
+        var(--success);
+
+      font-size:
+        23px;
+
+      font-weight:
+        700;
+    }
+
+
+    #successCard h2 {
+      margin:
+        0 0 6px;
+
+      font-size:
+        21px;
+
+      line-height:
+        1.25;
+    }
+
+
+    #successText {
+      max-width:
+        520px;
+
+      margin:
+        0 auto;
+
+      color:
+        var(--muted);
+
+      font-size:
+        13.5px;
+
+      line-height:
+        1.5;
+    }
+
+
+    /* HEADWAY */
+
+    #headwayArea {
+      display:
+        none;
+
+      margin-top:
+        14px;
+
+      padding-top:
+        14px;
+
+      border-top:
+        1px solid
+        #e1e8eb;
+    }
+
+
+    #headwayArea.visible {
+      display:
+        block;
+    }
+
+
+    #headwayArea p {
+      margin:
+        0 0 11px;
+
+      color:
+        var(--muted);
+
+      font-size:
+        12.5px;
+
+      line-height:
+        1.45;
+    }
+
+
+    .headway-button {
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      justify-content:
+        center;
+
+      width:
+        100%;
+
+      min-height:
+        48px;
+
+      padding:
+        10px 15px;
+
+      border-radius:
+        999px;
+
+      background:
+        var(--headway);
+
+      color:
+        #ffffff;
+
+      text-decoration:
+        none;
+
+      font-size:
+        14px;
+
+      font-weight:
+        700;
+    }
+
+
+    #fieldsArea.complete {
+      opacity:
+        0.68;
+
+      pointer-events:
+        none;
+
+      user-select:
+        none;
+    }
+
+
+    .emergency {
+      margin-top:
+        12px;
+
+      color:
+        #7d8d95;
+
+      font-size:
+        11px;
+
+      line-height:
+        1.4;
+    }
+
+
+    .website-field {
+      position:
+        absolute !important;
+
+      left:
+        -10000px !important;
+
+      width:
+        1px !important;
+
+      height:
+        1px !important;
+
+      opacity:
+        0 !important;
+
+      pointer-events:
+        none !important;
+    }
+
+
+    @media (max-width:600px) {
+
+      #app {
+        padding:
+          0 5px 30px;
+      }
+
+
+      .card {
+        padding:
+          17px 13px 22px;
+
+        border-radius:
+          12px;
+      }
+
+
+      .header {
+        margin-bottom:
+          17px;
+      }
+
+
+      .header h1 {
+        font-size:
+          24px;
+      }
+
+
+      .header p {
+        font-size:
+          13.5px;
+      }
+
+
+      .name-row {
+        display:
+          block;
+      }
+
+
+      .field {
+        margin-bottom:
+          13px;
+      }
+
+
+      .option {
+        min-height:
+          48px;
+
+        padding:
+          9px;
+      }
+
+
+      #successCard {
+        padding:
+          18px 13px;
+      }
+
+
+      #successCard h2 {
+        font-size:
+          20px;
+      }
+
+
+      .headway-button {
+        min-height:
+          50px;
+      }
+
+    }
+
+  </style>
+
+</head>
+
+
+<body>
+
+
+<div id="app">
+
+
+  <div class="card">
+
+
+    <div class="header">
+
+      <h1>
+        Request an Appointment
+      </h1>
+
+      <p>
+        Tell us how to reach you and how you'd prefer to get started.
+      </p>
+
+    </div>
+
+
+    <form
+      id="appointmentForm"
+      novalidate
+    >
+
+
+      <div
+        class="website-field"
+        aria-hidden="true"
+      >
+        <input
+          id="website"
+          type="text"
+          tabindex="-1"
+          autocomplete="off"
+        >
+      </div>
+
+
+      <div id="fieldsArea">
+
+
+        <div class="name-row">
+
+
+          <div class="field">
+
+            <label for="firstName">
+              First Name
+              <span class="required">*</span>
+            </label>
+
+            <input
+              id="firstName"
+              type="text"
+              autocomplete="given-name"
+              maxlength="80"
+            >
+
+            <div
+              id="firstNameError"
+              class="field-error"
+            ></div>
+
+          </div>
+
+
+          <div class="field">
+
+            <label for="lastName">
+              Last Name
+              <span class="required">*</span>
+            </label>
+
+            <input
+              id="lastName"
+              type="text"
+              autocomplete="family-name"
+              maxlength="80"
+            >
+
+            <div
+              id="lastNameError"
+              class="field-error"
+            ></div>
+
+          </div>
+
+
+        </div>
+
+
+        <div class="field">
+
+          <label for="phone">
+            Phone Number
+            <span class="required">*</span>
+          </label>
+
+          <input
+            id="phone"
+            type="tel"
+            autocomplete="tel"
+            inputmode="tel"
+            maxlength="30"
+            placeholder="Example: 915-555-1234"
+          >
+
+          <div
+            id="phoneError"
+            class="field-error"
+          ></div>
+
+        </div>
+
+
+        <div class="field">
+
+          <label for="email">
+            Email Address
+            <span class="required">*</span>
+          </label>
+
+          <input
+            id="email"
+            type="email"
+            autocomplete="email"
+            inputmode="email"
+            maxlength="160"
+            placeholder="Example: name@example.com"
+          >
+
+          <div
+            id="emailError"
+            class="field-error"
+          ></div>
+
+        </div>
+
+
+        <div class="field">
+
+          <label for="zipCode">
+            ZIP Code
+            <span class="required">*</span>
+          </label>
+
+          <input
+            id="zipCode"
+            type="text"
+            autocomplete="postal-code"
+            inputmode="numeric"
+            maxlength="10"
+            placeholder="Example: 79912"
+          >
+
+          <div
+            id="zipCodeError"
+            class="field-error"
+          ></div>
+
+        </div>
+
+
+        <div class="field">
+
+          <div class="group-label">
+            How would you like to get started?
+            <span class="required">*</span>
+          </div>
+
+
+          <div class="options">
+
+
+            <label class="option">
+
+              <input
+                type="radio"
+                name="paymentType"
+                value="Self-pay / Private pay"
+              >
+
+              <span class="option-copy">
+
+                <span class="option-title">
+                  Self-pay / Private pay
+                </span>
+
+                <span class="option-sub">
+                  We'll contact you about scheduling and self-pay options.
+                </span>
+
+              </span>
+
+            </label>
+
+
+            <label class="option">
+
+              <input
+                type="radio"
+                name="paymentType"
+                value="Insurance"
+              >
+
+              <span class="option-copy">
+
+                <span class="option-title">
+                  Insurance
+                </span>
+
+                <span class="option-sub">
+                  Submit here; you can also book through Headway afterward.
+                </span>
+
+              </span>
+
+            </label>
+
+
+            <label class="option">
+
+              <input
+                type="radio"
+                name="paymentType"
+                value="Free 15-minute consultation"
+              >
+
+              <span class="option-copy">
+
+                <span class="option-title">
+                  Not sure — request a free 15-minute consultation
+                </span>
+
+                <span class="option-sub">
+                  We'll contact you to arrange a brief consultation.
+                </span>
+
+              </span>
+
+            </label>
+
+
+          </div>
+
+
+          <div
+            id="paymentError"
+            class="field-error"
+          ></div>
+
+        </div>
+
+
+        <div class="field">
+
+          <div class="group-label">
+            Visit Preference
+            <span class="required">*</span>
+          </div>
+
+
+          <div class="options">
+
+
+            <label class="option">
+
+              <input
+                type="radio"
+                name="visitPreference"
+                value="Telehealth - Texas"
+              >
+
+              <span class="option-copy">
+
+                <span class="option-title">
+                  Telehealth — Texas
+                </span>
+
+              </span>
+
+            </label>
+
+
+            <label class="option">
+
+              <input
+                type="radio"
+                name="visitPreference"
+                value="In Person - El Paso"
+              >
+
+              <span class="option-copy">
+
+                <span class="option-title">
+                  In Person — El Paso
+                </span>
+
+              </span>
+
+            </label>
+
+
+          </div>
+
+
+          <div
+            id="visitError"
+            class="field-error"
+          ></div>
+
+        </div>
+
+
+      </div>
+
+
+      <div id="actionArea">
+
+
+        <button
+          id="submitButton"
+          type="submit"
+        >
+          Request Appointment
+        </button>
+
+
+        <div
+          id="status"
+          role="status"
+          aria-live="polite"
+        ></div>
+
+
+        <div
+          id="successCard"
+          role="status"
+          aria-live="polite"
+        >
+
+          <div class="success-check">
+            ✓
+          </div>
+
+          <h2>
+            Request received
+          </h2>
+
+          <p id="successText"></p>
+
+
+          <div id="headwayArea">
+
+            <p>
+              You can also check insurance eligibility and availability and book directly through Headway. We will still contact you about your request.
+            </p>
+
+            <a
+              class="headway-button"
+              href="https://care.headway.co/providers/elizabeth-ghadimi?utm_source=pem&utm_medium=direct_link&utm_campaign=207711"
+              target="_top"
+              rel="noopener noreferrer"
+            >
+              Check availability on Headway →
+            </a>
+
+          </div>
+
+        </div>
+
+
+        <div class="emergency">
+          If you are experiencing an emergency, call 911 or 988.
+        </div>
+
+
+      </div>
+
+
+    </form>
+
+
+  </div>
+
+
+</div>
+
+
+<script>
+(function () {
+
+  const app =
+    document.getElementById(
+      'app'
+    );
+
+
+  const form =
+    document.getElementById(
+      'appointmentForm'
+    );
+
+
+  const fieldsArea =
+    document.getElementById(
+      'fieldsArea'
+    );
+
+
+  const submitButton =
+    document.getElementById(
+      'submitButton'
+    );
+
+
+  const statusBox =
+    document.getElementById(
+      'status'
+    );
+
+
+  const successCard =
+    document.getElementById(
+      'successCard'
+    );
+
+
+  const successText =
+    document.getElementById(
+      'successText'
+    );
+
+
+  const headwayArea =
+    document.getElementById(
+      'headwayArea'
+    );
+
+
+  let submitted =
+    false;
+
+
+  let sending =
+    false;
+
+
+  let submissionId =
+    '';
+
+
+  let attemptNumber =
+    0;
+
+
+  let lastHeight =
+    0;
+
+
+  let resizeRAF =
+    null;
+
+
+  let resizeObserver =
+    null;
+
+
+  let slowTimer =
+    null;
+
+
+  let statusTimer1 =
+    null;
+
+
+  let statusTimer2 =
+    null;
+
+
+  let hardTimer =
+    null;
+
+
+
+  /* ========================================
+     SUBMISSION ID
+     ======================================== */
+
+  function createSubmissionId() {
+
+    if (
+      window.crypto &&
+      typeof
+        window.crypto.randomUUID ===
+        'function'
+    ) {
+
+      return window.crypto
+        .randomUUID()
+        .replace(
+          /-/g,
+          ''
+        );
+
+    }
+
+
+    return (
+      Date.now()
+        .toString(36) +
+      '_' +
+      Math.random()
+        .toString(36)
+        .slice(2) +
+      '_' +
+      Math.random()
+        .toString(36)
+        .slice(2)
+    );
+
+  }
+
+
+
+  /* ========================================
+     HEIGHT
+     ======================================== */
+
+  function getContentHeight() {
+
+    return Math.ceil(
+      Math.max(
+        app.getBoundingClientRect().height,
+        app.offsetHeight,
+        app.scrollHeight
+      )
+    );
+
+  }
+
+
+  function sendHeight(force) {
+
+    resizeRAF =
+      null;
+
+
+    if (submitted) {
+      return;
+    }
+
+
+    const height =
+      getContentHeight();
+
+
+    if (
+      !force &&
+      Math.abs(
+        height -
+        lastHeight
+      ) < 2
+    ) {
+
+      return;
+
+    }
+
+
+    lastHeight =
+      height;
+
+
+    window.parent.postMessage(
+      {
+        type:
+          'hmw_resize',
+
+        height:
+          height
+      },
+      '*'
+    );
+
+  }
+
+
+  function queueHeight(force) {
+
+    if (
+      resizeRAF !== null
+    ) {
+      return;
+    }
+
+
+    resizeRAF =
+      requestAnimationFrame(
+        function () {
+
+          sendHeight(
+            !!force
+          );
+
+        }
+      );
+
+  }
+
+
+
+  /* ========================================
+     READY
+     ======================================== */
+
+  function announceReady() {
+
+    const height =
+      getContentHeight();
+
+
+    lastHeight =
+      height;
+
+
+    window.parent.postMessage(
+      {
+        type:
+          'hmw_ready',
+
+        height:
+          height
+      },
+      '*'
+    );
+
+  }
+
+
+  requestAnimationFrame(
+    announceReady
+  );
+
+
+  setTimeout(
+    announceReady,
+    80
+  );
+
+
+  window.addEventListener(
+    'message',
+    function (event) {
+
+      if (
+        event.data &&
+        event.data.type ===
+          'hmw_parent_ready'
+      ) {
+
+        announceReady();
+
+      }
+
+    }
+  );
+
+
+
+  /* ========================================
+     ONE RESIZE OBSERVER
+     ======================================== */
+
+  if (
+    'ResizeObserver' in window
+  ) {
+
+    resizeObserver =
+      new ResizeObserver(
+        function () {
+
+          if (!submitted) {
+
+            queueHeight(
+              false
+            );
+
+          }
+
+        }
+      );
+
+
+    resizeObserver.observe(
+      app
+    );
+
+  }
+
+
+
+  /* ========================================
+     TIMERS
+     ======================================== */
+
+  function clearTimers() {
+
+    if (slowTimer) {
+      clearTimeout(slowTimer);
+      slowTimer = null;
+    }
+
+
+    if (statusTimer1) {
+      clearTimeout(statusTimer1);
+      statusTimer1 = null;
+    }
+
+
+    if (statusTimer2) {
+      clearTimeout(statusTimer2);
+      statusTimer2 = null;
+    }
+
+
+    if (hardTimer) {
+      clearTimeout(hardTimer);
+      hardTimer = null;
+    }
+
+  }
+
+
+
+  /* ========================================
+     VALIDATION HELPERS
+     ======================================== */
+
+  function setError(
+    input,
+    error,
+    message
+  ) {
+
+    input.classList.toggle(
+      'invalid',
+      !!message
+    );
+
+
+    error.textContent =
+      message || '';
+
+
+    error.classList.toggle(
+      'visible',
+      !!message
+    );
+
+
+    queueHeight(false);
+
+
+    return !message;
+
+  }
+
+
+  function validateName(
+    inputId,
+    errorId,
+    label
+  ) {
+
+    const input =
+      document.getElementById(
+        inputId
+      );
+
+
+    return setError(
+      input,
+
+      document.getElementById(
+        errorId
+      ),
+
+      input.value.trim()
+        ? ''
+        : 'Please enter your ' +
+          label +
+          '.'
+    );
+
+  }
+
+
+  function validatePhone() {
+
+    const input =
+      document.getElementById(
+        'phone'
+      );
+
+
+    const value =
+      input.value.trim();
+
+
+    const digits =
+      value.replace(
+        /\D/g,
+        ''
+      );
+
+
+    const valid =
+      !!value &&
+      /^\+?[0-9().\-\s]+$/
+        .test(value) &&
+      digits.length >= 7 &&
+      digits.length <= 15;
+
+
+    return setError(
+      input,
+
+      document.getElementById(
+        'phoneError'
+      ),
+
+      valid
+        ? ''
+        : 'Please use a phone number like 915-555-1234.'
+    );
+
+  }
+
+
+  function validateEmail() {
+
+    const input =
+      document.getElementById(
+        'email'
+      );
+
+
+    const value =
+      input.value
+        .trim()
+        .toLowerCase();
+
+
+    input.value =
+      value;
+
+
+    return setError(
+      input,
+
+      document.getElementById(
+        'emailError'
+      ),
+
+      /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/
+        .test(value)
+
+        ? ''
+
+        : 'Please use an email like name@example.com.'
+    );
+
+  }
+
+
+  function validateZip() {
+
+    const input =
+      document.getElementById(
+        'zipCode'
+      );
+
+
+    let value =
+      input.value
+        .trim()
+        .replace(
+          /\s+/g,
+          ''
+        );
+
+
+    if (
+      /^\d{9}$/.test(value)
+    ) {
+
+      value =
+        value.substring(0,5) +
+        '-' +
+        value.substring(5);
+
+
+      input.value =
+        value;
+
+    }
+
+
+    return setError(
+      input,
+
+      document.getElementById(
+        'zipCodeError'
+      ),
+
+      /^\d{5}(?:-\d{4})?$/
+        .test(value)
+
+        ? ''
+
+        : 'Please use a ZIP like 79912.'
+    );
+
+  }
+
+
+  function validateRadio(
+    name,
+    errorId,
+    message
+  ) {
+
+    const selected =
+      form.querySelector(
+        'input[name="' +
+        name +
+        '"]:checked'
+      );
+
+
+    const error =
+      document.getElementById(
+        errorId
+      );
+
+
+    error.textContent =
+      selected
+        ? ''
+        : message;
+
+
+    error.classList.toggle(
+      'visible',
+      !selected
+    );
+
+
+    queueHeight(false);
+
+
+    return !!selected;
+
+  }
+
+
+
+  /* ========================================
+     RADIO VISUALS
+     ======================================== */
+
+  form
+    .querySelectorAll(
+      'input[type="radio"]'
+    )
+    .forEach(
+      function (radio) {
+
+        radio.addEventListener(
+          'change',
+          function () {
+
+            form
+              .querySelectorAll(
+                'input[name="' +
+                radio.name +
+                '"]'
+              )
+              .forEach(
+                function (item) {
+
+                  const option =
+                    item.closest(
+                      '.option'
+                    );
+
+
+                  if (option) {
+
+                    option.classList.toggle(
+                      'selected',
+                      item.checked
+                    );
+
+                  }
+
+                }
+              );
+
+
+            if (
+              radio.name ===
+              'paymentType'
+            ) {
+
+              validateRadio(
+                'paymentType',
+                'paymentError',
+                'Please choose how you would like to get started.'
+              );
+
+            }
+
+
+            if (
+              radio.name ===
+              'visitPreference'
+            ) {
+
+              validateRadio(
+                'visitPreference',
+                'visitError',
+                'Please choose a visit preference.'
+              );
+
+            }
+
+          }
+        );
+
+      }
+    );
+
+
+  document
+    .getElementById('phone')
+    .addEventListener(
+      'blur',
+      validatePhone
+    );
+
+
+  document
+    .getElementById('email')
+    .addEventListener(
+      'blur',
+      validateEmail
+    );
+
+
+  document
+    .getElementById('zipCode')
+    .addEventListener(
+      'blur',
+      validateZip
+    );
+
+
+
+  /* ========================================
+     SUCCESS
+     ======================================== */
+
+  function showSuccess(
+    paymentType
+  ) {
+
+    if (submitted) {
+      return;
+    }
+
+
+    submitted =
+      true;
+
+
+    sending =
+      false;
+
+
+    clearTimers();
+
+
+    if (resizeObserver) {
+
+      resizeObserver.disconnect();
+
+      resizeObserver =
+        null;
+
+    }
+
+
+    fieldsArea.classList.add(
+      'complete'
+    );
+
+
+    form
+      .querySelectorAll(
+        'input'
+      )
+      .forEach(
+        function (input) {
+
+          input.disabled =
+            true;
+
+        }
+      );
+
+
+    submitButton.style.display =
+      'none';
+
+
+    statusBox.style.display =
+      'none';
+
+
+    successText.textContent =
+      'Thank you. We received your information and will contact you about scheduling and next steps.';
+
+
+    headwayArea.classList.remove(
+      'visible'
+    );
+
+
+    if (
+      paymentType ===
+      'Insurance'
+    ) {
+
+      headwayArea.classList.add(
+        'visible'
+      );
+
+    }
+
+
+    else if (
+      paymentType ===
+      'Free 15-minute consultation'
+    ) {
+
+      successText.textContent =
+        'Thank you. Your free 15-minute consultation request was received. We will contact you to arrange it.';
+
+    }
+
+
+    successCard.classList.add(
+      'visible'
+    );
+
+
+    /*
+     * The important part:
+     *
+     * send exact confirmation location
+     * to Squarespace.
+     */
+
+    requestAnimationFrame(
+      function () {
+
+        const appRect =
+          app.getBoundingClientRect();
+
+
+        const cardRect =
+          successCard
+            .getBoundingClientRect();
+
+
+        const finalHeight =
+          getContentHeight();
+
+
+        const cardTop =
+          cardRect.top -
+          appRect.top;
+
+
+        window.parent.postMessage(
+          {
+            type:
+              'hmw_submission_success',
+
+            paymentType:
+              paymentType,
+
+            height:
+              finalHeight,
+
+            cardTop:
+              cardTop,
+
+            cardHeight:
+              cardRect.height
+          },
+          '*'
+        );
+
+      }
+    );
+
+  }
+
+
+
+  /* ========================================
+     SERVER STATUS CHECK
+     ======================================== */
+
+  function checkStatus(
+    thisAttempt
+  ) {
+
+    if (
+      submitted ||
+      !sending ||
+      thisAttempt !==
+        attemptNumber
+    ) {
+
+      return;
+
+    }
+
+
+    google.script.run
+
+      .withSuccessHandler(
+        function (response) {
+
+          if (
+            submitted ||
+            !sending ||
+            thisAttempt !==
+              attemptNumber
+          ) {
+
+            return;
+
+          }
+
+
+          if (
+            response &&
+            response.status ===
+              'done'
+          ) {
+
+            const payment =
+              form.querySelector(
+                'input[name="paymentType"]:checked'
+              );
+
+
+            showSuccess(
+              payment
+                ? payment.value
+                : 'Self-pay / Private pay'
+            );
+
+
+            return;
+
+          }
+
+
+          if (
+            response &&
+            response.status ===
+              'processing'
+          ) {
+
+            submitButton.textContent =
+              'Still sending…';
+
+
+            statusBox.style.display =
+              'block';
+
+
+            statusBox.textContent =
+              'Your request is still processing. Please keep this page open.';
+
+
+            statusBox.className =
+              'slow-status';
+
+          }
+
+        }
+      )
+
+      .withFailureHandler(
+        function () {}
+      )
+
+      .checkSubmission(
+        submissionId
+      );
+
+  }
+
+
+
+  /* ========================================
+     ERROR
+     ======================================== */
+
+  function showServerError(
+    message,
+    thisAttempt
+  ) {
+
+    if (
+      submitted ||
+      thisAttempt !==
+        attemptNumber
+    ) {
+
+      return;
+
+    }
+
+
+    sending =
+      false;
+
+
+    clearTimers();
+
+
+    submitButton.disabled =
+      false;
+
+
+    submitButton.textContent =
+      'Try Again';
+
+
+    statusBox.style.display =
+      'block';
+
+
+    statusBox.textContent =
+      message;
+
+
+    statusBox.className =
+      'error-status';
+
+
+    queueHeight(true);
+
+  }
+
+
+
+  /* ========================================
+     SUBMIT
+     ======================================== */
+
+  form.addEventListener(
+    'submit',
+    function (event) {
+
+      event.preventDefault();
+
+
+      if (
+        submitted ||
+        sending
+      ) {
+
+        return;
+
+      }
+
+
+      const valid = [
+
+        validateName(
+          'firstName',
+          'firstNameError',
+          'first name'
+        ),
+
+        validateName(
+          'lastName',
+          'lastNameError',
+          'last name'
+        ),
+
+        validatePhone(),
+
+        validateEmail(),
+
+        validateZip(),
+
+        validateRadio(
+          'paymentType',
+          'paymentError',
+          'Please choose how you would like to get started.'
+        ),
+
+        validateRadio(
+          'visitPreference',
+          'visitError',
+          'Please choose a visit preference.'
+        )
+
+      ].every(Boolean);
+
+
+      if (!valid) {
+
+        statusBox.style.display =
+          'block';
+
+
+        statusBox.textContent =
+          'Please check the information above and try again.';
+
+
+        statusBox.className =
+          'error-status';
+
+
+        queueHeight(true);
+
+
+        return;
+
+      }
+
+
+      /*
+       * Close mobile keyboard.
+       */
+      if (
+        document.activeElement &&
+        typeof
+          document.activeElement.blur ===
+          'function'
+      ) {
+
+        document.activeElement.blur();
+
+      }
+
+
+      if (!submissionId) {
+
+        submissionId =
+          createSubmissionId();
+
+      }
+
+
+      const payment =
+        form.querySelector(
+          'input[name="paymentType"]:checked'
+        );
+
+
+      const visit =
+        form.querySelector(
+          'input[name="visitPreference"]:checked'
+        );
+
+
+      const data = {
+
+        submissionId:
+          submissionId,
+
+
+        firstName:
+          document
+            .getElementById(
+              'firstName'
+            )
+            .value
+            .trim(),
+
+
+        lastName:
+          document
+            .getElementById(
+              'lastName'
+            )
+            .value
+            .trim(),
+
+
+        phone:
+          document
+            .getElementById(
+              'phone'
+            )
+            .value
+            .trim(),
+
+
+        email:
+          document
+            .getElementById(
+              'email'
+            )
+            .value
+            .trim()
+            .toLowerCase(),
+
+
+        zipCode:
+          document
+            .getElementById(
+              'zipCode'
+            )
+            .value
+            .trim(),
+
+
+        paymentType:
+          payment.value,
+
+
+        visitPreference:
+          visit.value,
+
+
+        website:
+          document
+            .getElementById(
+              'website'
+            )
+            .value
+            .trim()
+
+      };
+
+
+      attemptNumber +=
+        1;
+
+
+      const thisAttempt =
+        attemptNumber;
+
+
+      sending =
+        true;
+
+
+      clearTimers();
+
+
+      submitButton.disabled =
+        true;
+
+
+      submitButton.textContent =
+        'Sending…';
+
+
+      statusBox.style.display =
+        'block';
+
+
+      statusBox.textContent =
+        '';
+
+
+      statusBox.className =
+        '';
+
+
+      /*
+       * 5 sec progress
+       */
+      slowTimer =
+        setTimeout(
+          function () {
+
+            if (
+              submitted ||
+              !sending ||
+              thisAttempt !==
+                attemptNumber
+            ) {
+
+              return;
+
+            }
+
+
+            submitButton.textContent =
+              'Still sending…';
+
+
+            statusBox.textContent =
+              'Finishing your request…';
+
+
+            statusBox.className =
+              'slow-status';
+
+
+            queueHeight(true);
+
+          },
+          5000
+        );
+
+
+      /*
+       * 8 sec server check
+       */
+      statusTimer1 =
+        setTimeout(
+          function () {
+
+            checkStatus(
+              thisAttempt
+            );
+
+          },
+          8000
+        );
+
+
+      /*
+       * 15 sec server check
+       */
+      statusTimer2 =
+        setTimeout(
+          function () {
+
+            checkStatus(
+              thisAttempt
+            );
+
+          },
+          15000
+        );
+
+
+      /*
+       * 22 sec hard recovery
+       */
+      hardTimer =
+        setTimeout(
+          function () {
+
+            if (
+              submitted ||
+              !sending ||
+              thisAttempt !==
+                attemptNumber
+            ) {
+
+              return;
+
+            }
+
+
+            sending =
+              false;
+
+
+            submitButton.disabled =
+              false;
+
+
+            submitButton.textContent =
+              'Try Again';
+
+
+            statusBox.style.display =
+              'block';
+
+
+            statusBox.textContent =
+              'We could not confirm the request yet. Tap Try Again.';
+
+
+            statusBox.className =
+              'error-status';
+
+
+            queueHeight(true);
+
+          },
+          22000
+        );
+
+
+      google.script.run
+
+        .withSuccessHandler(
+          function (response) {
+
+            if (
+              response &&
+              response.success ===
+                true
+            ) {
+
+              showSuccess(
+                response.paymentType ||
+                data.paymentType
+              );
+
+
+              return;
+
+            }
+
+
+            if (
+              thisAttempt !==
+                attemptNumber
+            ) {
+
+              return;
+
+            }
+
+
+            if (
+              response &&
+              response.processing
+            ) {
+
+              submitButton.textContent =
+                'Still sending…';
+
+
+              statusBox.style.display =
+                'block';
+
+
+              statusBox.textContent =
+                'Your request is still processing.';
+
+
+              statusBox.className =
+                'slow-status';
+
+
+              return;
+
+            }
+
+
+            showServerError(
+              response &&
+              response.message
+
+                ? response.message
+
+                : 'We could not submit your request. Please try again.',
+
+              thisAttempt
+            );
+
+          }
+        )
+
+        .withFailureHandler(
+          function (error) {
+
+            showServerError(
+              error &&
+              error.message
+
+                ? error.message
+
+                : 'We could not submit your request. Please try again.',
+
+              thisAttempt
+            );
+
+          }
+        )
+
+        .submitForm(
+          data
+        );
+
+    }
+  );
+
+})();
+</script>
+
+
+</body>
+
+</html>
